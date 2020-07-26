@@ -1,0 +1,29 @@
+project_name: 'neo4j-query-log-analyzer'
+
+before:
+  hooks:
+    - 'go mod tidy'
+
+builds:
+  - binary: 'neo4j-query-log-analyzer'
+    main: './bin'
+    ldflags:
+      - '-s'
+      - '-w'
+    env:
+      - 'CGO_ENABLED=0'
+
+archives:
+  - name_template: '{{ .ProjectName }}_{{ .Os }}_{{ .Arch }}{{ if .Arm }}v{{ .Arm }}{{ end }}'
+    replacements:
+      386: 'i386'
+      amd64: 'x86_64'
+      darwin: 'darwin'
+      linux: 'linux'
+      windows: 'windows'
+    format_overrides:
+      - goos: 'windows'
+        format: 'zip'
+
+release:
+  prerelease: 'auto'
