@@ -46,6 +46,7 @@ func (p *RecordParser) parseEmbedded(raw string) (*model.Record, error) {
 		PageHits:       firstFld.PageHits,
 		PageFaults:     firstFld.PageFaults,
 		SessionType:    firstFld.SessionType,
+		RemoteHost:     "",
 	}
 	return rec, nil
 }
@@ -68,6 +69,7 @@ func (p *RecordParser) parseBolt(raw string) (*model.Record, error) {
 		PageHits:       firstFld.PageHits,
 		PageFaults:     firstFld.PageFaults,
 		SessionType:    firstFld.SessionType,
+		RemoteHost:     "",
 	}
 	return rec, nil
 }
@@ -90,6 +92,7 @@ func (p *RecordParser) parseServer(raw string) (*model.Record, error) {
 		PageHits:       firstFld.PageHits,
 		PageFaults:     firstFld.PageFaults,
 		SessionType:    firstFld.SessionType,
+		RemoteHost:     flds[2],
 	}
 	return rec, nil
 }

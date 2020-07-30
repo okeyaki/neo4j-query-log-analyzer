@@ -11,5 +11,6 @@ type Record struct {
 	PageHits       int
 	PageFaults     int
 	SessionType    string
+	RemoteHost     string
 	Query          string
 }

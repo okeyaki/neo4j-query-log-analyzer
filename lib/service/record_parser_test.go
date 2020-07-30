@@ -30,6 +30,7 @@ func Test_RecordParser_CanParseRecord(t *testing.T) {
 				PlanningTime: 3,
 				CPUTime:      2,
 				WaitingTime:  1,
+				RemoteHost:   "",
 			},
 		},
 		{
@@ -48,6 +49,7 @@ func Test_RecordParser_CanParseRecord(t *testing.T) {
 				PlanningTime: 3,
 				CPUTime:      2,
 				WaitingTime:  1,
+				RemoteHost:   "",
 			},
 		},
 		{
@@ -64,6 +66,7 @@ func Test_RecordParser_CanParseRecord(t *testing.T) {
 				PlanningTime: 3,
 				CPUTime:      2,
 				WaitingTime:  1,
+				RemoteHost:   "127.0.0.1",
 			},
 		},
 	}
