@@ -17,10 +17,12 @@ func (b *ReportBuilder) Run(recs []*model.Record) (*model.Report, error) {
 		aggs = append(aggs, &model.QueryAgg{
 			Query:        qr,
 			Records:      qrRecs,
-			Time:         b.aggregateQueryTime(qrRecs, func(rec *model.Record) int { return rec.Time }),
-			PlanningTime: b.aggregateQueryTime(qrRecs, func(rec *model.Record) int { return rec.PlanningTime }),
-			CPUTime:      b.aggregateQueryTime(qrRecs, func(rec *model.Record) int { return rec.CPUTime }),
-			WaitingTime:  b.aggregateQueryTime(qrRecs, func(rec *model.Record) int { return rec.WaitingTime }),
+			Time:         b.aggregateInt(qrRecs, func(rec *model.Record) int { return rec.Time }),
+			PlanningTime: b.aggregateInt(qrRecs, func(rec *model.Record) int { return rec.PlanningTime }),
+			CPUTime:      b.aggregateInt(qrRecs, func(rec *model.Record) int { return rec.CPUTime }),
+			WaitingTime:  b.aggregateInt(qrRecs, func(rec *model.Record) int { return rec.WaitingTime }),
+			PageHit:      b.aggregateInt(qrRecs, func(rec *model.Record) int { return rec.PageHits }),
+			PageFault:    b.aggregateInt(qrRecs, func(rec *model.Record) int { return rec.PageFaults }),
 		})
 	}
 
@@ -39,10 +41,10 @@ func (b *ReportBuilder) groupRecordsByQuery(recs []*model.Record) map[string][]*
 	return qrs
 }
 
-func (b *ReportBuilder) aggregateQueryTime(
+func (b *ReportBuilder) aggregateInt(
 	recs []*model.Record,
 	get func(rec *model.Record) int,
-) *model.QueryTimeAgg {
+) *model.IntAgg {
 	total := 0
 	max := 0
 	for _, rec := range recs {
@@ -55,7 +57,7 @@ func (b *ReportBuilder) aggregateQueryTime(
 		}
 	}
 
-	return &model.QueryTimeAgg{
+	return &model.IntAgg{
 		Total: total,
 		Max:   max,
 		Mean:  total / len(recs),

@@ -39,6 +39,12 @@ func (f *ReportFormatter) Run(rep *model.Report) (string, error) {
 			WaitingTimeTotal  int    `json:"waitingTimeTotal"`
 			WaitingTimeMax    int    `json:"waitingTimeMax"`
 			WaitingTimeMean   int    `json:"waitingTimeMean"`
+			PageHitTotal      int    `json:"pageHitTotal"`
+			PageHitMax        int    `json:"pageHitTimeMax"`
+			PageHitMean       int    `json:"pageHitTimeMean"`
+			PageFaultTotal    int    `json:"pageFaultTotal"`
+			PageFaultMax      int    `json:"pageFaultMax"`
+			PageFaultMean     int    `json:"pageFaultMean"`
 		}{
 			Query:             agg.Query,
 			Count:             len(agg.Records),
@@ -54,6 +60,12 @@ func (f *ReportFormatter) Run(rep *model.Report) (string, error) {
 			WaitingTimeTotal:  agg.WaitingTime.Total,
 			WaitingTimeMax:    agg.WaitingTime.Max,
 			WaitingTimeMean:   agg.WaitingTime.Mean,
+			PageHitTotal:      agg.PageHit.Total,
+			PageHitMax:        agg.PageHit.Max,
+			PageHitMean:       agg.PageHit.Mean,
+			PageFaultTotal:    agg.PageFault.Total,
+			PageFaultMax:      agg.PageFault.Max,
+			PageFaultMean:     agg.PageFault.Mean,
 		})
 		if err != nil {
 			return "", errors.WithStack(err)
