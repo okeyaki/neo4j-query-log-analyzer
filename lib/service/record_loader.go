@@ -6,6 +6,7 @@ import (
 	"os"
 
 	"github.com/okeyaki/neo4j-query-log-analyzer/lib/model"
+	"github.com/pkg/errors"
 )
 
 type RecordLoader struct {
@@ -23,21 +24,48 @@ func NewRecordLoader() *RecordLoader {
 func (l *RecordLoader) Run() ([]*model.Record, error) {
 	recs := []*model.Record{}
 
-	scanner := bufio.NewScanner(l.normalizer.Run(os.Stdin))
-	for scanner.Scan() {
-		rec, err := l.parser.Run(scanner.Text())
+	reader := bufio.NewReader(l.normalizer.Run(os.Stdin))
+	for {
+		raw, err := l.read(reader)
 		if err != nil {
-			continue
+			if err == io.EOF {
+				break
+			}
+
+			return recs, err
+		}
+
+		rec, err := l.parser.Run(raw)
+		if err != nil {
+			return recs, err
 		}
 		if rec != nil {
 			recs = append(recs, rec)
 		}
 	}
-	if err := scanner.Err(); err != nil {
-		if err != io.EOF {
-			return recs, err
+
+	return recs, nil
+}
+
+func (l *RecordLoader) read(reader *bufio.Reader) (string, error) {
+	var bRaw []byte
+	for {
+		buf, isPrefix, err := reader.ReadLine()
+		if err != nil {
+			if err == io.EOF {
+				return "", err
+			}
+			return "", errors.WithStack(err)
+		}
+
+		bRaw = append(bRaw, buf[:]...)
+
+		if !isPrefix {
+			break
 		}
 	}
 
-	return recs, nil
+	raw := string(bRaw)
+
+	return raw, nil
 }
