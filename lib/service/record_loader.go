@@ -2,6 +2,7 @@ package service
 
 import (
 	"bufio"
+	"io"
 	"os"
 
 	"github.com/okeyaki/neo4j-query-log-analyzer/lib/model"
@@ -30,6 +31,11 @@ func (l *RecordLoader) Run() ([]*model.Record, error) {
 		}
 		if rec != nil {
 			recs = append(recs, rec)
+		}
+	}
+	if err := scanner.Err(); err != nil {
+		if err != io.EOF {
+			return recs, err
 		}
 	}
 
