@@ -40,8 +40,8 @@ func (f *ReportFormatter) Run(rep *model.Report) (string, error) {
 			WaitingTimeMax    int    `json:"waitingTimeMax"`
 			WaitingTimeMean   int    `json:"waitingTimeMean"`
 			PageHitTotal      int    `json:"pageHitTotal"`
-			PageHitMax        int    `json:"pageHitTimeMax"`
-			PageHitMean       int    `json:"pageHitTimeMean"`
+			PageHitMax        int    `json:"pageHitMax"`
+			PageHitMean       int    `json:"pageHitMean"`
 			PageFaultTotal    int    `json:"pageFaultTotal"`
 			PageFaultMax      int    `json:"pageFaultMax"`
 			PageFaultMean     int    `json:"pageFaultMean"`
